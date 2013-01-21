@@ -5,7 +5,8 @@
   (use binary.pack)
   (export open-output-zip-archive
           zip-add-entry
-          zip-close))
+          zip-close
+          call-with-output-zip-archive))
 
 (select-module zip-archive)
 
@@ -106,5 +107,12 @@
         :output (~ za 'port)))
     (close-output-port (~ za 'port)))
   (sys-rename (~ za 'tempname) (~ za 'name)))
+
+(define-syntax call-with-output-zip-archive
+  (syntax-rules ()
+    ((_ filename proc)
+     (let1 za (open-output-zip-archive filename)
+       (proc za)
+       (zip-close za)))))
 
 (provide "zip-archive")
