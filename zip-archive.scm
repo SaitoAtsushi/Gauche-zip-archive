@@ -4,7 +4,7 @@
   (use rfc.zlib)
   (use binary.pack)
   (export open-output-zip-archive
-          zip-add-file
+          zip-add-entry
           zip-close))
 
 (select-module zip-archive)
@@ -56,7 +56,7 @@
       (sys-mkstemp (string-append (sys-dirname filename) "/ziptmp"))
     (make <zip-archive> :port port :name filename :tempname tempname)))
 
-(define-method zip-add-file
+(define-method zip-add-entry
   ((za <zip-archive>) (name <string>) (content <string>)
    :key (timestamp (~ za 'timestamp))
         (compression-level Z_DEFAULT_COMPRESSION))
