@@ -112,7 +112,10 @@
   (syntax-rules ()
     ((_ filename proc)
      (let1 za (open-output-zip-archive filename)
-       (proc za)
-       (zip-close za)))))
+       (guard (e (else (close-output-port (~ za 'port))
+                       (sys-unlink (~ za 'tempname))
+                       (raise e)))
+         (proc za)
+         (zip-close za))))))
 
 (provide "zip-archive")

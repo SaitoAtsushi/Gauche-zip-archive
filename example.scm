@@ -13,3 +13,10 @@
     (zip-add-entry za "one.txt" "number 1.")
     (zip-add-entry za "two.txt" "number 2.")
     (zip-add-entry za "three.txt" "number 3.")))
+
+(call-with-output-zip-archive "test3.zip"
+  (lambda(za)
+    (zip-add-entry za "eins.txt" "number 1.")
+    (zip-add-entry za "twei.txt" "number 2.")
+    (error "It's error test.")
+    (zip-add-entry za "drei.txt" "number 3.")))
