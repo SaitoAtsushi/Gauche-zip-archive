@@ -14,7 +14,7 @@ DESTDIR        =
 INSTALL        = "@GAUCHE_INSTALL@" -C
 
 # Module-specific stuff
-PACKAGE   = Gauche-zip-archive
+PACKAGE   = zip-archive
 
 SCMFILES  = $(srcdir)/zip-archive.scm
 
