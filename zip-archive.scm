@@ -31,6 +31,8 @@
 
 (define-class <zip-archive> ()
   ((port :init-keyword :port)
+   (name :init-keyword :name)
+   (tempname :init-keyword :tempname)
    (timestamp :init-form (current-date))
    (local-file-headers :init-form '())))
 
@@ -50,7 +52,9 @@
       :output (~ za 'port)))
 
 (define (open-output-zip-archive filename)
-  (make <zip-archive> :port (open-output-file filename)))
+  (receive (port tempname)
+      (sys-mkstemp "ziptmp")
+    (make <zip-archive> :port port :name filename :tempname tempname)))
 
 (define-method zip-add-file
   ((za <zip-archive>) (name <string>) (content <string>)
@@ -100,6 +104,7 @@
       (pack "VvvvvVVv"
         (list #x06054b50 0 0 num num (- eoc cd) cd 0)
         :output (~ za 'port)))
-    (close-output-port (~ za 'port))))
+    (close-output-port (~ za 'port)))
+  (sys-rename (~ za 'tempname) (~ za 'name)))
 
 (provide "zip-archive")
