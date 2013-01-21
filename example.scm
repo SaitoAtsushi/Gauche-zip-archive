@@ -1,4 +1,4 @@
-
+#!/usr/bin/env gosh
 (use zip-archive)
 (use rfc.zlib)
 
