@@ -53,7 +53,7 @@
 
 (define (open-output-zip-archive filename)
   (receive (port tempname)
-      (sys-mkstemp "ziptmp")
+      (sys-mkstemp (string-append (sys-dirname filename) "/ziptmp"))
     (make <zip-archive> :port port :name filename :tempname tempname)))
 
 (define-method zip-add-file
