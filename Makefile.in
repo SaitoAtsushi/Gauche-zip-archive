@@ -11,20 +11,26 @@ VPATH       = $(srcdir)
 
 # These may be overridden by make invocators
 DESTDIR        =
+GOSH           = "@GOSH@"
 INSTALL        = "@GAUCHE_INSTALL@" -C
 
 # Module-specific stuff
-PACKAGE   = zip-archive
+PACKAGE   = Gauche-zip-archive
 
 SCMFILES  = $(srcdir)/zip-archive.scm
 
-GENERATED =
 CONFIG_GENERATED = Makefile config.cache config.log config.status \
 		   configure.lineno autom4te*.cache $(PACKAGE).gpd
 
 GAUCHE_PKGLIBDIR  = "$(DESTDIR)@GAUCHE_PKGLIBDIR@"
 
+zip_archive_SRCS = $(srcdir)/zip_archive.c $(srcdir)/zip_archivelib.stub
+
 all :
+
+check : all
+	@rm -f test.log
+	$(GOSH) -I. -I$(srcdir) $(srcdir)/test.scm > test.log
 
 install : all
 	$(INSTALL) -m 444 -T $(GAUCHE_PKGLIBDIR) $(SCMFILES)
@@ -35,11 +41,10 @@ uninstall :
 	$(INSTALL) -U $(GAUCHE_PKGLIBDIR)/.packages $(PACKAGE).gpd
 
 clean :
-	rm -rf core $(GENERATED) *~ test.log so_locations
+	rm -rf *~ test.log so_locations
 
 distclean : clean
 	rm -rf $(CONFIG_GENERATED)
 
 maintainer-clean : clean
-	rm -rf $(CONFIG_GENERATED) configure VERSION
-
+	rm -rf $(CONFIG_GENERATED)  VERSION
