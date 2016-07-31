@@ -1,2 +1,0 @@
-FOR /F "tokens=2 delims=${}" %%i in ("@GAUCHE_PKGLIBDIR@") do "@GAUCHE_INSTALL@" -C -m 444 -T @prefix@/share/%%i ./zip-archive.scm
-FOR /F "tokens=2 delims=${}" %%i in ("@GAUCHE_PKGLIBDIR@") do "@GAUCHE_INSTALL@" -C -m 444 -T @prefix@/share/%%i/.packages Gauche-zip-archive.gpd
