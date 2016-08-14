@@ -16,7 +16,10 @@
           zip-entry-timestamp
           zip-entry-datasize
           zip-entry-filename
-          zip-entry-body))
+          zip-entry-body
+          zip-entry?
+          input-zip-archive?
+          output-zip-archive?))
 
 (select-module zip-archive)
 
@@ -60,8 +63,14 @@
   ((#:tempname :init-keyword :tempname :getter zip-archive-tempname)
    (#:timestamp :init-form (current-date) :getter zip-archive-timestamp)))
 
+(define (output-zip-archive? obj)
+  (is-a? obj <output-zip-archive>))
+
 (define-class <input-zip-archive> (<zip-archive> <collection>)
   ())
+
+(define (input-zip-archive? obj)
+  (is-a? obj <input-zip-archive>))
 
 (define (write-pk0304 entry)
   (pack "VvvvVVVVvva*"
