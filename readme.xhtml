@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Gauche-zip-archive</title>
+</head>
+<body>
+<h1>Gauche-zip-archive</h1>
+<p>A library to read/write zip archive file.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Gauche 0.9.5 pre1 or later</li>
+</ul>
+
+<h2 id="install">Install</h2>
+<h3>Building from tarball</h3>
+<pre>% ./configure
+% make install
+</pre>
+<h3>For windows without MSYS</h3>
+<pre>&gt; install.bat</pre>
+
+<h2 id="usage">Usage</h2>
+<p>This library name is <strong>zip-archive</strong>.
+At first, use it.</p>
+<pre>(use zip-archive)</pre>
+<p>Vocabulary that this library provides is two categories with roughly.
+That is writing and reading.</p>
+
+<h3 id="writing">For writing</h3>
+
+<h4 id="open-output-zip-archive">(open-output-zip-archive <em>string</em>)</h4>
+<p>Takes a <em>string</em> naming an output zip archive to be created and returns an output-zip-archive object.</p>
+
+<h4 id="zip-close">(zip-close <em>output-zip-archive</em>)</h4>
+<p>Finanize the archive associated with <em>output-zip-archive</em>.</p>
+
+<h4 id="zip-add-entry">(zip-add-entry <em>output-zip-archive</em> <em>string<sub>1</sub></em> <em>string<sub>2</sub></em>)</h4>
+<p>Write entry that named <em>string<sub>1</sub></em> into the file associated <em>output-zip-archive</em>.  The content of the entry is <em>string<sub>2</sub></em>.</p>
+<p>This is a generic function. If you want to store an object other than string, be able to define a method.</p>
+
+<h4 id="call-with-output-zip-archive">(call-with-output-zip-archive <em>string</em> <em>proc</em>)</h4>
+<p>Open tje zip archive that named <em>string</em> to write and call <em>proc</em> with <em>output-zip-archive</em> object. <em>Proc</em> must receive one argument.</p>
+<p>The <em>output-zip-archive</em> object is closed automatically after return from <em>proc</em>.</p>
+
+<h4 id="output-zip-archive_p">(output-zip-archive? obj)</h4>
+<p>This procedure return #t if <em>obj</em> is <em>output-zip-archive</em> object.
+Otherwise this return #f.</p>
+
+<h3 id="reading">For reading</h3>
+
+<h4 id="open-input-zip-archive">(open-input-zip-archive <em>string</em>)</h4>
+<p>Takes a <em>string</em> naming an input zip archive to be created and returns a <em>input-zip-archive</em> object.</p>
+<p><em>input-zip-archive</em> class is iherited <em>&lt;collection&gt;</em> class. You can handle this as if it were a collection that contains the <em>entry</em> objects. See <a href="http://practical-scheme.net/gauche/man/?l=en&amp;p=gauche.collection">gauche.collection</a>.</p>
+
+<h4>(zip-close <em>input-zip-archive</em>)</h4>
+<p>Close the archive associated with <em>input-zip-archive</em>.</p>
+
+<h4 id="call-with-input-zip-archive">(call-with-input-zip-archive <em>string</em> <em>proc</em>)</h4>
+<p>Open the zip archive that named <em>string</em> for reading and call <em>proc</em> with <em>input-zip-archive</em> object. <em>Proc</em> must receive one argument.</p>
+<p>The <em>input-zip-archive</em> object is closed automatically after return from <em>proc</em>.</p>
+
+<h4 id="zip-entries">(zip-entries <em>input-zip-archive</em>)</h4>
+<p>Returns a list of <em>entry</em> objects in the <em>input-zip-archive</em>.</p>
+<p><em>input-zip-archive</em> object is collection. You should not take entries from <em>input-zip-archive</em> object explicitly by <em>zip-entries</em>.</p>
+
+<h4>(zip-entry-timestamp <em>zip-entry</em>)</h4>
+<p>Returns timestamp of <em>zip-entry</em> as a <a href="http://practical-scheme.net/gauche/man/?l=en&amp;p=&lt;date&gt;">date</a> object.</p>
+
+<h4>(zip-entry-datasize <em>zip-entry</em>)</h4>
+<p>Returns uncompressed size of content in <em>zip-entry</em>. A size of the content is a number of bytes.</p>
+
+<h4>(zip-entry-filename <em>zip-entry</em>)</h4>
+<p>Returns filename of <em>zip-entry</em>.</p>
+
+<h4>(zip-entry-body <em>zip-entry</em>)</h4>
+<p>Inflate content of <em>zip-entry</em> and returns it as a string.</p>
+
+</body>
+</html>
