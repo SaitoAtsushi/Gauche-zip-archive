@@ -6,7 +6,8 @@
   (use binary.pack)
   (use gauche.collection)
   (use gauche.record)
-  (export open-output-zip-archive
+  (export <output-zip-archive>
+          open-output-zip-archive
           open-input-zip-archive
           zip-close
           call-with-output-zip-archive
@@ -53,14 +54,14 @@
   (#:filename        zip-entry-filename))
 
 (define-class <zip-archive> ()
-  ((#:port :init-keyword :port :getter zip-archive-port)
-   (#:name :init-keyword :name :getter zip-archive-name)
+  ((#:port :init-keyword :port :accessor zip-archive-port)
+   (#:name :init-keyword :name :accessor zip-archive-name)
    (#:entries :init-keyword :entries
               :accessor zip-archive-entries
               :init-form '())))
 
 (define-class <output-zip-archive> (<zip-archive>)
-  ((#:tempname :init-keyword :tempname :getter zip-archive-tempname)
+  ((#:tempname :init-keyword :tempname :accessor zip-archive-tempname)
    (#:timestamp :init-form (current-date) :getter zip-archive-timestamp)))
 
 (define (output-zip-archive? obj)
@@ -87,10 +88,20 @@
           (zip-entry-filename entry))
     :output (zip-archive-port (zip-entry-archive entry))))
 
+(define-method initialize ((obj <output-zip-archive>) initargs)
+  (next-method obj '())
+  (let-keywords initargs
+      ((filename :name #f) . restargs)
+    (unless filename
+      (error "<output-zip-archive> class requires :name argument in initialization"))
+    (set! (zip-archive-name obj) filename)
+    (receive (port tempname)
+        (sys-mkstemp (string-append (sys-dirname filename) "/ziptmp"))
+      (set! (zip-archive-port obj)  port)
+      (set! (zip-archive-tempname obj) tempname))))
+
 (define (open-output-zip-archive filename)
-  (receive (port tempname)
-      (sys-mkstemp (string-append (sys-dirname filename) "/ziptmp"))
-    (make <output-zip-archive> :port port :name filename :tempname tempname)))
+  (make <output-zip-archive> :name filename))
 
 (define-method zip-add-entry
     ((archive <output-zip-archive>) (name <string>) (content <string>)
