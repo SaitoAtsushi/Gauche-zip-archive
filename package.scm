@@ -3,7 +3,7 @@
 ;;
 
 (define-gauche-package "Gauche-zip-archive"
-  :version "1.2"
+  :version "1.3"
   :description "ZIP archive creation library."
   :require (("Gauche" (>= "0.9.5_pre1")))
   :authors ("SAITO Atsushi <maldikulo@gmail.com>")

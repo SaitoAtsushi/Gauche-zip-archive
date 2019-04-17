@@ -77,7 +77,7 @@
   (pack "VvvvVVVVvva*"
     (list #x04034b50
           20
-          0
+          2048
           (zip-entry-compress-method entry)
           (date->dos-format (zip-entry-timestamp entry))
           (zip-entry-checksum entry)
@@ -131,7 +131,7 @@
 
 (define (write-pk0102 entry)
   (pack "VvvvvVVVVvvvvvVVa*"
-    (list #x02014b50 20 20 0
+    (list #x02014b50 20 20 2048
           (zip-entry-compress-method entry)
           (date->dos-format (zip-entry-timestamp entry))
           (zip-entry-checksum entry)
